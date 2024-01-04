@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python3 MAIA-v2-rpi-edition/MAIA-main/launch.py
