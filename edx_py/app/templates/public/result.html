@@ -1,0 +1,61 @@
+
+<!-- public/result.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makefile Generation Result</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        a {
+            color: green;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Makefile Generation Result</h2>
+    <p id="resultMessage"></p>
+    <a href="#" id="downloadLink" style="display: none;" download>Download Makefile</a>
+
+    <script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    var form = document.querySelector('form');
+	    var downloadLink = document.getElementById('downloadLink');
+
+	    form.addEventListener('submit', function(event) {
+		event.preventDefault();
+
+		// Effectuez une requête AJAX pour générer le Makefile
+		fetch('/generate_makefile', {
+		    method: 'POST',
+		    body: new FormData(form),
+		})
+		.then(response => response.json())  // Assumez que le serveur renvoie un JSON
+		.then(data => {
+		    // Une fois le Makefile généré et déplacé, affichez le lien de téléchargement
+		    downloadLink.href = data.downloadPath;
+		    downloadLink.style.display = 'block';
+		})
+		.catch(error => console.error(error));
+	    });
+	});
+    </script>
+</body>
+</html>
+

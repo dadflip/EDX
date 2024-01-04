@@ -1,0 +1,70 @@
+{
+    "title": "Main Menu",
+    "options": [
+        {
+            "label": "User",
+            "submenu": {
+                "title": "User Menu",
+                "options": [
+                    {
+                        "label": "Help",
+                        "action": "show_help"
+                    },
+                    {
+                        "label": "Crack",
+                        "action": "usr_crack_function"
+                    },
+                    {
+                        "label": "Files",
+                        "action": "show_files"
+                    },
+                    {
+                        "label": "Back"
+                    }
+                ]
+            }
+        },
+        {
+            "label": "Root",
+            "submenu": {
+                "title": "Root Menu",
+                "options": [
+                    {
+                        "label": "Option 2.1"
+                    },
+                    {
+                        "label": "Option 2.2"
+                    },
+                    {
+                        "label": "Commands",
+                        "action": "list_and_execute_commands"
+                    },
+                    {
+                        "label": "Back"
+                    }
+                ]
+            }
+        },
+        {
+            "label": "Settings",
+            "submenu": {
+                "title": "Settings Menu",
+                "options": [
+                    {
+                        "label": "Change Login"
+                    },
+                    {
+                        "label": "Change Password"
+                    },
+                    {
+                        "label": "Back"
+                    }
+                ]
+            }
+        },
+        {
+            "label": "Quit",
+            "action": "exit"
+        }
+    ]
+}

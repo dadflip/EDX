@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makefile Generator</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        label, select, input, button {
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"], input[type="file"], select {
+            width: calc(100% - 10px);
+            padding: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        #compiler-fields, #package-manager-fields {
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        #file-list {
+            margin-top: 10px;
+            max-height: 100px;
+            overflow-y: auto;
+            background-color: #f0f0f0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="{{ url_for('generate_makefile') }}" method="post">
+        <label for="source_dir">Source Folder:</label>
+        <input type="text" name="source_dir" id="source_dir" style="display: none;" required>
+        <input type="file" id="source_dir_selector" webkitdirectory directory multiple style="display: none;">
+        <button type="button" onclick="openFolderSelector()">Select Folder</button><br>
+
+        <label>Source Extensions:</label><br>
+        <input type="checkbox" name="source_ext" value="c"> C Source File<br>
+        <label>Source Extensions (comma-separated):</label><br>
+        <input type="text" name="source_ext"><br>
+
+        <!-- Add other source extensions as needed -->
+        <br>
+
+        <label for="tool_type">Select Tool Type:</label>
+        <select name="tool_type">
+            <option value="1">Compiler</option>
+            <option value="2">Package Manager</option>
+        </select><br>
+
+        <!-- Additional fields for Compiler -->
+        <div id="compiler-fields" style="display: none;">
+            <label for="compiler">Select Compiler:</label>
+            <select name="compiler">
+                <option value="gcc">GNU Compiler Collection</option>
+                <!-- Add other compilers as needed -->
+            </select><br>
+
+            <label>Libraries to Link:</label><br>
+            <input type="checkbox" name="lib_flags" value="dl"> dl Dynamic linking library<br>
+            <!-- Add other libraries as needed -->
+            <br>
+        </div>
+
+        <!-- Additional fields for Package Manager -->
+        <div id="package-manager-fields" style="display: none;">
+            <label for="package_manager">Select Package Manager:</label>
+            <select name="package_manager">
+                <option value="cargo">Cargo (Rust Package Manager)</option>
+                <!-- Add other package managers as needed -->
+            </select><br>
+        </div>
+
+        <button type="submit">Generate Makefile</button>
+        
+        <!-- Lien de téléchargement du Makefile généré -->
+        <a href="#" id="downloadLink" style="display: none;" download>Download Makefile</a>
+
+        <!-- File list -->
+        <div id="file-list"></div>
+        <button onclick="fetchLogs()">Voir les journaux</button>
+    </form>
+
+    <script>
+        function openFolderSelector() {
+            document.getElementById('source_dir_selector').click();
+        }
+        
+        function fetchLogs() {
+        // Utilisez JavaScript pour récupérer les logs
+        fetch('/logs')
+            .then(response => response.text())
+            .then(data => alert(data))  // Vous pouvez afficher les logs dans une fenêtre d'alerte ou les afficher d'une autre manière
+            .catch(error => console.error(error));
+        }
+
+	document.getElementById('source_dir_selector').addEventListener('change', function() {
+		// Extracting the file name from the fake path
+		var fileName = this.value.replace(/^.*[\\\/]/, '');
+
+		// Display the file name in the text input
+		document.getElementById('source_dir').value = fileName;
+
+		// Hide the file selector
+		this.style.display = 'none';
+
+		// Show the text input
+		document.getElementById('source_dir').style.display = 'inline-block';
+	});
+        
+	document.addEventListener('DOMContentLoaded', function() {
+	var form = document.querySelector('form');
+	var downloadLink = document.getElementById('downloadLink');
+
+	form.addEventListener('submit', function(event) {
+	event.preventDefault();
+
+	// Utilisez FormData pour envoyer le formulaire, y compris les fichiers
+	var formData = new FormData(form);
+
+	// Effectuez une requête fetch pour générer le Makefile
+	fetch('/generate_makefile', {
+	    method: 'POST',
+	    body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {
+	    if (data.success) {
+		// Si la génération du Makefile est réussie, affichez le lien de téléchargement
+		downloadLink.href = data.downloadPath;
+		downloadLink.style.display = 'block';
+	    } else {
+		// Si une erreur est survenue, affichez un message d'erreur
+		alert('Erreur lors de la génération du Makefile');
+	    }
+	})
+	.catch(error => console.error(error));
+	});
+	});
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var toolTypeSelect = document.querySelector('select[name="tool_type"]');
+            var compilerFields = document.getElementById('compiler-fields');
+            var packageManagerFields = document.getElementById('package-manager-fields');
+
+            toolTypeSelect.addEventListener('change', function() {
+                if (toolTypeSelect.value === '1') {
+                    compilerFields.style.display = 'block';
+                    packageManagerFields.style.display = 'none';
+                } else if (toolTypeSelect.value === '2') {
+                    compilerFields.style.display = 'none';
+                    packageManagerFields.style.display = 'block';
+                } else {
+                    compilerFields.style.display = 'none';
+                    packageManagerFields.style.display = 'none';
+                }
+            });
+
+            var sourceExtCheckbox = document.querySelector('input[name="source_ext"]');
+            var fileInput = document.getElementById('source_dir_selector');
+            var fileListDiv = document.getElementById('file-list');
+
+            sourceExtCheckbox.addEventListener('change', function() {
+                // Reset the file list when the source extension changes
+                fileListDiv.innerHTML = '';
+
+                if (sourceExtCheckbox.checked) {
+                    // Get the selected extension
+                    var selectedExt = sourceExtCheckbox.value;
+
+                    // Get the files with the selected extension from the selected folder
+                    var files = [];
+                    if (fileInput.files && fileInput.files.length > 0) {
+                        for (var i = 0; i < fileInput.files.length; i++) {
+                            var file = fileInput.files[i];
+                            if (file.name.endsWith(selectedExt)) {
+                                files.push(file.name);
+                            }
+                        }
+                    }
+
+                    // Display the files in the file list
+                    if (files.length > 0) {
+                        var fileList = '<strong>Files with extension ' + selectedExt + ':</strong><br>';
+                        for (var j = 0; j < files.length; j++) {
+                            fileList += files[j] + '<br>';
+                        }
+                        fileListDiv.innerHTML = fileList;
+                    } else {
+                        fileListDiv.innerHTML = '<em>No files with extension ' + selectedExt + ' found.</em>';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
