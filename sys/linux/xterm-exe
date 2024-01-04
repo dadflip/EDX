@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Vérifiez si xterm est installé
+if ! command -v xterm &>/dev/null; then
+  echo "Erreur : xterm n'est pas installé sur votre système."
+  exit 1
+fi
+
+# Vérifiez si un argument est passé au script
+if [ $# -eq 0 ]; then
+  echo "Utilisation : $0 <commande>"
+  exit 1
+fi
+
+# Prenez la première commande passée en argument
+commande="$1"
+shift
+
+# Exécutez la commande dans xterm
+xterm -e "$commande" "$@"
+

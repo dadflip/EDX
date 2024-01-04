@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html style="background-color: black">
+
+<head>
+  <meta charset="utf-8">
+  <title>dadflip.ddns.net</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Sonsie+One" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  
+  <style>
+    body {
+      background-image: url('img/bckgnd.png'); /*image de fond */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center;
+      /*background-color: black; Couleur de secours en cas d'échec du chargement de l'image */
+    }
+  </style>
+  
+</head>
+
+<body>
+  <div id="app">
+    <header>
+      <h1 style="font-family: 'Open Sans Condensed', sans-serif; text-align: center; font-size: 36px;">EDX EXPLORER CONTROL CENTER</h1>
+    </header>
+
+    <main class="w3-panel">
+      <div class="w3-container">
+        <div class="w3-bar w3-light-grey">
+          <a href="#" class="w3-bar-item w3-button">Home</a>
+          <a class="w3-bar-item w3-button" href="/main/splash/index.html">My Website</a>
+          <div class="w3-dropdown-hover">
+            <button class="w3-button">Liens</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4">
+              <center><a class="w3-bar-item w3-button" href="http://myesp.onthewifi.com/">ESP CONTROL</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://github.com/dadflip">GITHUB</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://www.tinkercad.com/dashboard">TINKERCAD (Dr. flipper)</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://scratch.mit.edu/mystuff/">SCRATCH MIT EDU</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://www.youtube.com/@dadflip">DADFLIP'S CHANNEL</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://cas.utbm.fr/login?service=https://monespace.utbm.fr/Login">UTBM CAS</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://www.riotgames.com/fr">RIOT GAMES</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://www.root-me.org/?page=news&lang=fr">ROOT ME</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://www.twitch.tv/">TWITCH</a></center>
+              <center><a class="w3-bar-item w3-button" href="https://www.instagram.com/dadflip_channel/">INSTAGRAM</a></center>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <center>
+        <form action="filepost.php" method="post" enctype="multipart/form-data">
+          <div>
+            <label for="file">Sélectionner le fichier à envoyer</label><br>
+            <input class="w3-button w3-black w3-round-xlarge" type="file" id="file" name="file" multiple>
+          </div>
+          <div>
+            <p><button onclick="move()" class="w3-button w3-black w3-round-xlarge">Envoyer</button></p>
+          </div>
+        </form>
+      </center>
+
+      <br><br>
+      
+<div id="terminal-output"></div>
+
+<div class="w3-third">
+          <div class="w3-card w3-hover-shadow">
+            <img src="img/dadflip.png" alt="Image 1" style="width:100%">
+            <div class="w3-container">
+            <h5>Shell</h5>
+            <p>Open shell.</p>
+            </div>
+        </div>
+</div>
+
+        <div class="w3-third">
+          <div class="w3-card w3-hover-shadow">
+            <img src="img/dadflip.png" alt="Image 2" style="width:100%">
+            <div class="w3-container">
+              <h5>Section 2</h5>
+              <p>Description de la section 2.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="w3-third">
+          <div class="w3-card w3-hover-shadow">
+            <img src="img/dadflip.png" alt="Image 3" style="width:100%">
+            <div class="w3-container">
+              <h5>Section 3</h5>
+              <p>Description de la section 3.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+    </main>
+  </div>
+</body>
+
+</html>
+

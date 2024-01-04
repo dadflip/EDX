@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <script>
+  const { ipcRenderer } = require('electron');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const terminalDiv = document.getElementById('terminal');
+    const inputElement = document.getElementById('input');
+
+    ipcRenderer.on('terminal-data', (event, data) => {
+      terminalDiv.innerHTML += data;
+    });
+
+    inputElement.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        ipcRenderer.send('user-input', inputElement.value);
+        inputElement.value = ''; // Efface le champ de saisie après avoir appuyé sur Entrée.
+      }
+    });
+  });
+  </script>
+
+  <head>
+    <title>Terminal Electron</title>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+        font-family: monospace;
+      }
+
+      .terminal {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="terminal" id="terminal">
+     Welcome to Electron Terminal!
+    </div>
+    <input id="input" type="text" autofocus>
+
+  </body>
+</html>
+
